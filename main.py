@@ -2,7 +2,7 @@ import os
 
 family = os.environ.get('INPUT_FAMILY-NAME')
 
-os.environ["OUTPUT_TASK-DEFINITION"] = family
+print(f'::set-output name=task-definition::${family}')
 
 
 def main():
