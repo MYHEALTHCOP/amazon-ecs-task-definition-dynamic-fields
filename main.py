@@ -1,5 +1,10 @@
+import os
+
+family = os.envrion.get('family-name')
+
+
 def main():
-    print("\n\nHello GitHub actions\n\n")
+    print(f"\n\nHello GitHub actions: ${family}\n\n")
 
 if __name__ == "__main__":
     main()

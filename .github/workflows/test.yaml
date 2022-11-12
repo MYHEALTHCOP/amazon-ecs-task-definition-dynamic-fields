@@ -15,5 +15,11 @@ jobs:
     steps:
       - name: Checkout
         uses: actions/checkout@v2
+
       - name: Test hello world
         uses: ./
+        id: hello
+        with:
+          family-name: "Testing Family Name"
+      - name: Echo output
+        run: echo "${{ steps.hello.outputs.task-definition }}"
