@@ -1,2 +1,5 @@
 def main():
-    print("Hello GitHub actions")
+    print("\n\nHello GitHub actions\n\n")
+
+if __name__ == "__main__":
+    main()
