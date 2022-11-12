@@ -8,9 +8,8 @@ print(f'::set-output name=task-definition::${family}')
 
 
 def main():
-    print(f"\n\nHello GitHub actions: ${family}\n\n")
-    print(f'::set-output name=task-definition::${family}')
-    print(output)
+    print(f"\n\nHello GitHub actions: ${output}\n\n")
+    
 
 if __name__ == "__main__":
     main()
