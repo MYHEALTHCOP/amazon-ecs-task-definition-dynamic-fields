@@ -20,6 +20,6 @@ jobs:
         uses: ./
         id: hello
         with:
-          family-name: "Testing Family Name"
+          family-name: "Here is  a test input"
       - name: Echo output
         run: echo "${{ steps.hello.outputs.task-definition }}"
