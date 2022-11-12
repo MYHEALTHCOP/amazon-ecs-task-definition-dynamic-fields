@@ -1,0 +1,17 @@
+name: "Amazon-ecs-task-definition-dynamic-fields"
+description: "Dynamically update any task definition field"
+inputs:
+  family-name:
+    description: "Name of the task definition family"
+    required: true
+outputs:
+  task-definition:
+    description: "A new task definition with your changes"
+runs:
+  using: "docker"
+  image: "Dockerfile"
+  args:
+    - ${{ inputs.family-name }}
+branding: #generates a logo for our action
+  icon: arrow-down #icon of the image
+  color: blue # background color of the logo of our action

@@ -1,0 +1,11 @@
+name: Testing action
+
+jobs:
+  test-hello-world:
+    name: Test hello world
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v2
+      - name: Test hello world
+        uses: ./
