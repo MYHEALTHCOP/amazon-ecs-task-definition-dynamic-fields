@@ -20,6 +20,9 @@ jobs:
         uses: ./
         id: hello
         with:
-          family-name: "Here is  a test input"
+          family-name: "file-service-task"
+          region: ${{ secrets.AWS_REGION }}
+          aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY_ID }}
+          aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
       - name: Echo output
-        run: echo "${{ steps.hello.outputs.task-definition }}"
+        run: echo ${{ steps.hello.outputs.task-definition }}
