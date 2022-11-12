@@ -14,5 +14,5 @@ RUN pip install -r requirements.txt
 # add source code
 COPY . .
 
-ENTRYPOINT [ "python", "/main.py" ]
+ENTRYPOINT [ "python", "main.py" ]
 
