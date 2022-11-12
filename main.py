@@ -22,11 +22,18 @@ class TaskDefinitionConfig:
     def save_new_task_definition(self):
         pass
     
-
+    def credentials():
+        return {
+            "access_key_id": self.acess_key_id,
+            "region": self.region,
+            "family": self.family,
+            "secret_access_key": self.secret_access_key
+        }
 
 
     
     
 
 if __name__ == "__main__":
-    print(TaskDefinitionConfig().download_latest_revision())
+    
+    print(self.credentials())
