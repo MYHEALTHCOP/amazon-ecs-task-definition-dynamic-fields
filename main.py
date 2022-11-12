@@ -1,7 +1,7 @@
 import os
 import boto3
 from botocore.config import Config
-client = boto3.client('kinesis', config=my_config)
+
 
 
 class TaskDefinitionConfig:
