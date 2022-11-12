@@ -1,6 +1,6 @@
 import os
 
-family = os.envrion.get('family-name')
+family = os.environ.get('family-name')
 
 
 def main():
