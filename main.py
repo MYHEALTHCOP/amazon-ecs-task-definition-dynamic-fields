@@ -24,7 +24,7 @@ class TaskDefinitionConfig:
     
     def credentials(self):
         return {
-            "access_key_id": self.acess_key_id,
+            "access_key_id": self.access_key_id,
             "region": self.region,
             "family": self.family,
             "secret_access_key": self.secret_access_key
