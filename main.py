@@ -8,8 +8,8 @@ class TaskDefinitionConfig:
     def __init__(self):
         self.family = os.environ.get('INPUT_TASK-FAMILY')
         self.region = os.environ.get('INPUT_AWS-REGION')
-        self.access_key_id = os.environ.get('INPUT_AWS_ACCESS_KEY_ID')
-        self.secret_access_key = os.environ.get('INPUT_AWS_SECRET_ACCESS_KEY')
+        self.access_key_id = os.environ.get('INPUT_AWS-ACCESS-KEY-ID')
+        self.secret_access_key = os.environ.get('INPUT_AWS-SECRET-ACCESS-KEY')
         self.config = Config(region_name=self.region, signature_version='v4', retries={'max_attempts': 3, 'mode': 'standard'})
         self.ecs = boto3.client('ecs', aws_access_key_id=self.access_key_id, aws_secret_access_key=self.secret_access_key,config=self.config)
 
