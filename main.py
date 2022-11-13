@@ -35,5 +35,5 @@ class TaskDefinitionConfig:
     
 
 if __name__ == "__main__":
-    
+    print(TaskDefinitionConfig().download_latest_revision())
     print(TaskDefinitionConfig().credentials())
