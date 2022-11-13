@@ -15,10 +15,11 @@ class TaskDefinitionConfig:
         self.ecs = boto3.client('ecs', aws_access_key_id=self.access_key_id, aws_secret_access_key=self.secret_access_key,config=self.config)
 
     def download_latest_revision(self):
-        return self.ecs.describe_task_definition(taskDefinition='{}:1'.format(self.family))
+        return self.ecs.describe_task_definition(taskDefinition='{}:100'.format(self.family))
     
     def fill_in_given_fields(self):
-        pass
+        for key, value in self.fields:
+            pass
 
     def save_new_task_definition(self):
         pass
