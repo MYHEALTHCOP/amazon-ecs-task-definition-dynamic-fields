@@ -1,8 +1,21 @@
 name: "Amazon-ecs-task-definition-dynamic-fields"
 description: "Dynamically update any task definition field"
 inputs:
-  family-name:
+  task-family:
     description: "Name of the task definition family"
+    required: true
+  task-revision:
+    description: "Revision of the task definition family"
+    default: "latest"
+    required: false
+  aws-access-key-id:
+    description: "Your AWS access key ID: pass through github secrets"
+    required: true
+  aws-secret-access-key:
+    description: "Your AWS secret access key: pass through github secrets"
+    required: true
+  aws-region:
+    description: "The region of your ecs cluster"
     required: true
 outputs:
   task-definition:
