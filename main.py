@@ -7,6 +7,7 @@ from botocore.config import Config
 class TaskDefinitionConfig:
     def __init__(self):
         self.family = os.environ.get('INPUT_TASK-FAMILY')
+        self.revision = os.environ.get('INPUT_TASK-REVISION')
         self.region = os.environ.get('INPUT_AWS-REGION')
         self.access_key_id = os.environ.get('INPUT_AWS-ACCESS-KEY-ID')
         self.secret_access_key = os.environ.get('INPUT_AWS-SECRET-ACCESS-KEY')
@@ -15,10 +16,11 @@ class TaskDefinitionConfig:
         self.ecs = boto3.client('ecs', aws_access_key_id=self.access_key_id, aws_secret_access_key=self.secret_access_key,config=self.config)
 
     def download_latest_revision(self):
-        return self.ecs.describe_task_definition(taskDefinition='{}:100'.format(self.family))
+        return self.ecs.describe_task_definition(taskDefinition='{}:{}'.format(self.family, self.revision))
     
     def fill_in_given_fields(self):
         for key, value in self.fields:
+            if key
             pass
 
     def save_new_task_definition(self):

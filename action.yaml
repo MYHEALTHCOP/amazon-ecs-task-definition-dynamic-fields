@@ -6,7 +6,7 @@ inputs:
     required: true
   task-revision:
     description: "Revision of the task definition family"
-    default: "latest"
+    default: ""
     required: false
   aws-access-key-id:
     description: "Your AWS access key ID: pass through github secrets"
