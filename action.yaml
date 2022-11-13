@@ -17,6 +17,9 @@ inputs:
   aws-region:
     description: "The region of your ecs cluster"
     required: true
+  dynamic-fields:
+    description: "The fields to update in the task definition"
+    required: true
 outputs:
   task-definition:
     description: "A new task definition with your changes"
