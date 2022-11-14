@@ -1,9 +1,13 @@
 import os
 import boto3
 from botocore.config import Config
-
-# import ClientError from botocore.exceptions
 from botocore.exceptions import ClientError
+import logging
+
+
+logging.basicConfig(level = logging.INFO, format='%(levelname)s:%(message)s')
+
+logger = logging.getLogger()
 
 
 
@@ -19,6 +23,11 @@ class TaskDefinitionConfig:
         self.ecs = boto3.client('ecs', aws_access_key_id=self.access_key_id, aws_secret_access_key=self.secret_access_key,config=self.config)
         self.task_definition = None
         self.updated_task_definition = None
+
+        # log the input parameters
+        logger.info('Task family: %s', self.family)
+        logger.info('Task revision: %s', self.revision if self.revision else 'None recieved. Using latest!')
+
     
     def download_task_definition(self):
         task_definition_identifier = self.family + ':' + self.revision if self.revision else self.family
@@ -29,12 +38,14 @@ class TaskDefinitionConfig:
         else:
             meta_data = response.pop('ResponseMetadata')
             if meta_data['HTTPStatusCode'] == 200:
-                print(response['taskDefinition']['containerDefinitions'][0]['image'])
                 self.task_definition = response['taskDefinition']
+                task_definition_name = response['taskDefinition']['family'] + ':' + str(response['taskDefinition']['revision'])
+                logger.info('Task definition: %s downloaded successfully!', task_definition_name)
                           
 
     def replace_image_uri(self):
         self.task_definition['containerDefinitions'][0]['image'] = self.image
+        logger.info('Image URI replaced successfully!')
          
        
 
@@ -47,10 +58,13 @@ class TaskDefinitionConfig:
             raise error
         else:
             self.updated_task_definition = response['taskDefinition']
+            old_task_definition_name = self.task_definition['family'] + ':' + str(self.task_definition['revision'])
+            new_task_definition_name = updated_task_definition['family'] + ':' + str(updated_task_definition['revision'])
+            logger.info('Sucess: %s --> %s', old_task_definition_name, new_task_definition_name)
        
 
 if __name__ == "__main__":
     task_definition_config = TaskDefinitionConfig()
     task_def = task_definition_config.download_task_definition()
-    # task_definition_config.replace_image_uri()
-    # task_definition_config.save_new_task_definition()
+    task_definition_config.replace_image_uri()
+    task_definition_config.save_new_task_definition()
