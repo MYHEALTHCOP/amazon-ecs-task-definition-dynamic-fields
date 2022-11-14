@@ -97,7 +97,7 @@ class TaskDefinitionConfig:
     
     def update_ecs_service(self):
         try:
-            response = self.ecs.update_service(cluster=self.cluster_name, service=self.service_name, taskDefinition=self.task_definition_name)
+            response = self.ecs.update_service(cluster=self.cluster_name, service=self.service_name, taskDefinition=self.task_definition_name, forceNewDeployment=True)
         except Exception as error:
             raise error
         else:
