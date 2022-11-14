@@ -38,8 +38,8 @@ class TaskDefinitionConfig:
        
 
     def save_new_task_definition(self):
-        self.task_definition.pop("registeredAt")
-        self.task_definition.pop("deregisteredAt")
+        self.task_definition.pop("registeredAt", None)
+        self.task_definition.pop("deregisteredAt", None)
         try:
             response = self.ecs.register_task_definition(**self.task_definition)
         except Exception as error:
