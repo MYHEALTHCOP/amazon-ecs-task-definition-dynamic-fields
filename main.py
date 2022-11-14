@@ -21,8 +21,9 @@ class TaskDefinitionConfig:
         self.updated_task_definition = None
     
     def download_task_definition(self):
+        task_definition_identifier = self.family + ':' + self.revision if self.revision else self.family
         try:
-            response = self.ecs.describe_task_definition(taskDefinition='{}:{}'.format(self.family, self.revision))
+            response = self.ecs.describe_task_definition(taskDefinition=task_definition_identifier)
         except Exception as error:
             raise error
         else:
