@@ -41,7 +41,7 @@ class TaskDefinitionConfig:
         self.task_definition.pop("registeredAt", None)
         self.task_definition.pop("deregisteredAt", None)
         try:
-            response = self.ecs.register_task_definition(**self.task_definition)
+            response = self.ecs.register_task_definition(containerDefinitions=self.task_definition['containerDefinitions'])
         except Exception as error:
             raise error
         else:
