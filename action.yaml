@@ -17,8 +17,8 @@ inputs:
   aws-region:
     description: "The region of your ecs cluster"
     required: true
-  dynamic-fields:
-    description: "The fields to update in the task definition"
+  image-uri:
+    description: "The URI of the new image"
     required: true
 outputs:
   task-definition:
