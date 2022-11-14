@@ -24,7 +24,7 @@ class TaskDefinitionConfig:
         try:
             response = self.ecs.describe_task_definition(taskDefinition='{}:{}'.format(self.family, self.revision))
         except Exception as e:
-            raise ClientError(str(e))
+            print(str(e))
         else:
             meta_data = response.pop('ResponseMetadata')
             if meta_data['HTTPStatusCode'] == 200:
