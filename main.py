@@ -47,6 +47,7 @@ class TaskDefinitionConfig:
 
     def replace_image_uri(self):
         self.task_definition['containerDefinitions'][0]['image'] = self.image
+        self.task_definition['requiresCompatibilities'] = ['FARGATE']
         logger.info('Image URI updated!')
          
        
