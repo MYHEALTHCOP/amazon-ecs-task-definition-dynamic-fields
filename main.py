@@ -39,12 +39,12 @@ class TaskDefinitionConfig:
             raise error
         else:
             meta_data = response.pop('ResponseMetadata', None)
-            logger.info(response.get('taskDefinition').get('requiredCompatibilities'))
+            
             if meta_data['HTTPStatusCode'] == 200:
                 self.task_definition = response['taskDefinition']
                 task_definition_name = response['taskDefinition']['family'] + ':' + str(response['taskDefinition']['revision'])
                 logger.info('Task definition: %s downloaded successfully!', task_definition_name)
-                          
+                logger.info(response.get('taskDefinition').get('requiredCompatibilities'))         
 
     def replace_image_uri(self):
         self.task_definition['containerDefinitions'][0]['image'] = self.image
