@@ -62,10 +62,11 @@ class TaskDefinitionConfig:
             raise error
         else:
             meta_data = response.pop('ResponseMetadata', None)
-            logger.info(self.task_definition.get('requiresCompatibilities'))
-            logger.info(self.task_definition.get('compatibilities'))
+            
             if meta_data['HTTPStatusCode'] == 200:
                 self.task_definition = self.purge_useless_keys(response['taskDefinition'])
+                logger.info(self.task_definition.get('requiresCompatibilities'))
+                logger.info(self.task_definition.get('compatibilities'))
                 self.revision = self.task_definition['revision']
                 self.task_role_arn = self.task_definition.get('taskRoleArn')
                 self.execution_role_arn = self.task_definition.get('executionRoleArn')
