@@ -38,7 +38,8 @@ class TaskDefinitionConfig:
         except Exception as error:
             raise error
         else:
-            meta_data = response.pop('ResponseMetadata')
+            meta_data = response.pop('ResponseMetadata', None)
+            print(response.get('taskDefinition').get('requiredCompatibilities'))
             if meta_data['HTTPStatusCode'] == 200:
                 self.task_definition = response['taskDefinition']
                 task_definition_name = response['taskDefinition']['family'] + ':' + str(response['taskDefinition']['revision'])
