@@ -29,6 +29,7 @@ class TaskDefinitionConfig:
         else:
             meta_data = response.pop('ResponseMetadata')
             if meta_data['HTTPStatusCode'] == 200:
+                print(response['taskDefinition']['containerDefinitions'][0]['image'])
                 self.task_definition = response['taskDefinition']
                           
 
@@ -46,10 +47,10 @@ class TaskDefinitionConfig:
             raise error
         else:
             self.updated_task_definition = response['taskDefinition']
-            print("old: {}, new: {}".format(self.task_definition['containerDefinitions'][0]["image"], self.updated_task_definition['containerDefinitions'][0]["image"]))   
+       
 
 if __name__ == "__main__":
     task_definition_config = TaskDefinitionConfig()
     task_def = task_definition_config.download_task_definition()
-    task_definition_config.replace_image_uri()
-    task_definition_config.save_new_task_definition()
+    # task_definition_config.replace_image_uri()
+    # task_definition_config.save_new_task_definition()
