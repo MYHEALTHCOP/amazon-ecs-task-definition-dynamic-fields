@@ -23,8 +23,8 @@ class TaskDefinitionConfig:
     def download_task_definition(self):
         try:
             response = self.ecs.describe_task_definition(taskDefinition='{}:{}'.format(self.family, self.revision))
-        except Exception as e:
-            print(str(e))
+        except Exception as error:
+            raise error
         else:
             meta_data = response.pop('ResponseMetadata')
             if meta_data['HTTPStatusCode'] == 200:
