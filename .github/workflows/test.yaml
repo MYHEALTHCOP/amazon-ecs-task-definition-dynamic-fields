@@ -28,6 +28,7 @@ jobs:
           # image-uri: 591424133958.dkr.ecr.${{secrets.AWS_REGION}}.amazonaws.com/file-service:file-service
           cluster-name: "api-cluster"
           service-name: "file-service"
+          task-revision: "17"
 
       - name: Echo output
         run: echo ${{ steps.hello.outputs.task-definition }}
