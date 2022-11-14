@@ -70,7 +70,6 @@ class TaskDefinitionConfig:
                 self.execution_role_arn = self.task_definition.get('executionRoleArn')
                 self.container_definitions = self.task_definition.get('containerDefinitions')
                 logger.info('Task definition: %s downloaded successfully!', self.task_definition_name)
-                logger.info(response.get('taskDefinition').get('requiresCompatibilities'))         
 
     def purge_useless_keys(self, taskdef:dict)-> dict: 
         keys = ['registeredAt', 'deregisteredAt', 'ResponseMetadata']
@@ -88,6 +87,7 @@ class TaskDefinitionConfig:
 
     def save_new_task_definition(self):
         try:
+            logger.info(self.task_definition)
             response = self.ecs.register_task_definition(containerDefinitions=self.container_definitions, family=self.family, executionRoleArn=self.execution_role_arn, taskRoleArn=self.task_role_arn)
         except Exception as error:
             raise error
