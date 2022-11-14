@@ -62,7 +62,8 @@ class TaskDefinitionConfig:
             raise error
         else:
             meta_data = response.pop('ResponseMetadata', None)
-            
+            logger.info(self.task_definition.get('requiresCompatibilities'))
+            logger.info(self.task_definition.get('compatibilities'))
             if meta_data['HTTPStatusCode'] == 200:
                 self.task_definition = self.purge_useless_keys(response['taskDefinition'])
                 self.revision = self.task_definition['revision']
@@ -80,15 +81,13 @@ class TaskDefinitionConfig:
 
     def fill_in_required_info(self):
         self.container_definitions[0]['image'] = self.image
-        self.task_definition['requiresCompatibilities'] = ['FARGATE', 'EC2']
+        self.task_definition['requiresCompatibilities'] = ['FARGATE']
         logger.info('Image URI and other info updated!')
          
        
 
     def save_new_task_definition(self):
         try:
-            logger.info(self.task_definition.get('requiresCompatibilities'))
-            logger.info(self.task_definition.get('compatibilities'))
             response = self.ecs.register_task_definition(containerDefinitions=self.container_definitions, family=self.family, executionRoleArn=self.execution_role_arn, taskRoleArn=self.task_role_arn)
         except Exception as error:
             raise error
