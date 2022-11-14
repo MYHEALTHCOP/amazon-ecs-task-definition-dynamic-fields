@@ -106,8 +106,9 @@ class TaskDefinitionConfig:
     
 
 if __name__ == "__main__":
-    task_definition_config = TaskDefinitionConfig()
-    task_def = task_definition_config.download_task_definition()
-    task_definition_config.replace_image_uri()
-    task_definition_config.save_new_task_definition()
-    task_definition_config.update_ecs_service()
+    taskdef_config = TaskDefinitionConfig()
+    taskdef_config.validate_inputs()
+    taskdef_config.download_task_definition()
+    taskdef_config.fill_in_required_info()
+    taskdef_config.save_new_task_definition()
+    taskdef_config.update_ecs_service()
