@@ -21,54 +21,79 @@ class TaskDefinitionConfig:
         self.image = os.environ.get('INPUT_IMAGE-URI')
         self.service_name = os.environ.get('INPUT_SERVICE-NAME')
         self.cluster_name = os.environ.get('INPUT_CLUSTER-NAME')
+        self.task_definition_name = self.family + ':' + self.revision if self.revision else self.family
         self.config = Config(region_name=self.region, signature_version='v4', retries={'max_attempts': 3, 'mode': 'standard'})
         self.ecs = boto3.client('ecs', aws_access_key_id=self.access_key_id, aws_secret_access_key=self.secret_access_key,config=self.config)
-        self.task_definition = None
-        self.updated_task_definition = None
+        self.task_definition = dict()
+        self.task_role_arn = self.task_definition.get('taskRoleArn')
+        self.execution_role_arn = self.task_definition.get('executionRoleArn')
+        self.container_definitions = self.task_definition.get('containerDefinitions')
 
-        # log the input parameters
+    def validate_inputs(self):
+        if not self.family:
+            raise ValueError('Task family is required!')
+        if not self.image:
+            raise ValueError('Image URI is required!')
+        if not self.service_name:
+            raise ValueError('Service name is required!')
+        if not self.cluster_name:
+            raise ValueError('Cluster name is required!')
+        if not self.region:
+            raise ValueError('AWS region is required!')
+        if not self.access_key_id:
+            raise ValueError('AWS access key is required!')
+        if not self.secret_access_key:
+            raise ValueError('AWS secret access key is required!')
+        
         logger.info('Task family: %s', self.family)
         logger.info('Task revision: %s', self.revision if self.revision else 'No revision provided. Using latest!')
+        logger.info('Image URI recieved!')
+        logger.info('Service was provided!')
+        logger.info('Cluster was provided!')
+        logger.info('AWS region was provided!')
+        logger.info('AWS access key was provided!')
+        logger.info('AWS secret access key was provided!')
 
     
     def download_task_definition(self):
-        task_definition_identifier = self.family + ':' + self.revision if self.revision else self.family
         try:
-            response = self.ecs.describe_task_definition(taskDefinition=task_definition_identifier)
+            response = self.ecs.describe_task_definition(taskDefinition=self.task_definition_name)
         except Exception as error:
             raise error
         else:
             meta_data = response.pop('ResponseMetadata', None)
             
             if meta_data['HTTPStatusCode'] == 200:
-                self.task_definition = response['taskDefinition']
-                task_definition_name = response['taskDefinition']['family'] + ':' + str(response['taskDefinition']['revision'])
-                logger.info('Task definition: %s downloaded successfully!', task_definition_name)
+                self.task_definition = self.purge_useless_keys(response['taskDefinition'])
+                self.revision = self.task_definition['revision']
+                logger.info('Task definition: %s downloaded successfully!', self.task_definition_name)
                 logger.info(response.get('taskDefinition').get('requiresCompatibilities'))         
 
-    def replace_image_uri(self):
-        self.task_definition['containerDefinitions'][0]['image'] = self.image
+    def purge_useless_keys(self, taskdef:dict)-> dict: 
+        keys = ['registeredAt', 'deregisteredAt', 'ResponseMetadata']
+        for key in keys:
+            taskdef.pop(key, None)
+        return taskdef
+
+
+    def fill_in_required_info(self):
+        self.container_definitions[0]['image'] = self.image
         self.task_definition['requiresCompatibilities'] = ['FARGATE']
-        logger.info('Image URI updated!')
+        logger.info('Image URI and other info updated!')
          
        
 
     def save_new_task_definition(self):
-        self.task_definition.pop("registeredAt", None)
-        self.task_definition.pop("deregisteredAt", None)
         try:
-            response = self.ecs.register_task_definition(containerDefinitions=self.task_definition['containerDefinitions'], family=self.family, executionRoleArn=self.task_definition['executionRoleArn'], taskRoleArn=self.task_definition['taskRoleArn'])
+            response = self.ecs.register_task_definition(containerDefinitions=self.container_definitions, family=self.family, executionRoleArn=self.execution_role_arn, taskRoleArn=self.task_role_arn)
         except Exception as error:
             raise error
         else:
-            self.updated_task_definition = response['taskDefinition']
-            old_task_definition_name = self.task_definition['family'] + ':' + str(self.task_definition['revision'])
-            new_task_definition_name = self.updated_task_definition['family'] + ':' + str(self.updated_task_definition['revision'])
-            logger.info('Sucess: %s --> %s', old_task_definition_name, new_task_definition_name)
+            logger.info('Sucess: %s --> %s:%d', self.task_definition_name, self.family,int(self.revision)+1)
     
     def update_ecs_service(self):
         try:
-            response = self.ecs.update_service(cluster=self.cluster_name, service=self.service_name, taskDefinition=self.updated_task_definition['family'] + ':' + str(self.updated_task_definition['revision']))
+            response = self.ecs.update_service(cluster=self.cluster_name, service=self.service_name, taskDefinition=self.task_definition_name)
         except Exception as error:
             raise error
         else:
@@ -78,6 +103,7 @@ class TaskDefinitionConfig:
             else:
                 logger.error('Error: Service %s could not be updated!', service_name)
                 logger.error('Error: %s', response)
+    
 
 if __name__ == "__main__":
     task_definition_config = TaskDefinitionConfig()
