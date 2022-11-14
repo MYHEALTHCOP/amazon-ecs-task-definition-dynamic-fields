@@ -20,6 +20,12 @@ inputs:
   image-uri:
     description: "The URI of the new image"
     required: true
+  cluster-name:
+    description: "The name of the cluster to run the service on"
+    required: true
+  service-name:
+    description: "The name of the service name of the service to update"
+    required: true
 outputs:
   task-definition:
     description: "A new task definition with your changes"
