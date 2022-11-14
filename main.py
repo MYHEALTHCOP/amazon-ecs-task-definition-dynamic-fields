@@ -5,7 +5,7 @@ from botocore.exceptions import ClientError
 import logging
 
 
-logging.basicConfig(level = logging.INFO, format='%(levelname)s:%(message)s')
+logging.basicConfig(level = logging.INFO, format='%(levelname)s: %(message)s')
 
 logger = logging.getLogger()
 
@@ -26,7 +26,7 @@ class TaskDefinitionConfig:
 
         # log the input parameters
         logger.info('Task family: %s', self.family)
-        logger.info('Task revision: %s', self.revision if self.revision else 'None recieved. Using latest!')
+        logger.info('Task revision: %s', self.revision if self.revision else 'None provided. Using latest!')
 
     
     def download_task_definition(self):
@@ -45,7 +45,7 @@ class TaskDefinitionConfig:
 
     def replace_image_uri(self):
         self.task_definition['containerDefinitions'][0]['image'] = self.image
-        logger.info('Image URI replaced successfully!')
+        logger.info('Image URI updated!')
          
        
 
@@ -59,7 +59,7 @@ class TaskDefinitionConfig:
         else:
             self.updated_task_definition = response['taskDefinition']
             old_task_definition_name = self.task_definition['family'] + ':' + str(self.task_definition['revision'])
-            new_task_definition_name = updated_task_definition['family'] + ':' + str(updated_task_definition['revision'])
+            new_task_definition_name = self.updated_task_definition['family'] + ':' + str(self.updated_task_definition['revision'])
             logger.info('Sucess: %s --> %s', old_task_definition_name, new_task_definition_name)
        
 
