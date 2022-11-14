@@ -26,7 +26,7 @@ class TaskDefinitionConfig:
 
         # log the input parameters
         logger.info('Task family: %s', self.family)
-        logger.info('Task revision: %s', self.revision if self.revision else 'None provided. Using latest!')
+        logger.info('Task revision: %s', self.revision if self.revision else 'No revision provided. Using latest!')
 
     
     def download_task_definition(self):
