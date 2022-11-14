@@ -103,9 +103,9 @@ class TaskDefinitionConfig:
         else:
             meta_data = response.pop('ResponseMetadata')
             if meta_data['HTTPStatusCode'] == 200:
-                logger.info('Sucess: Service %s updated successfully!', service_name)
+                logger.info('Sucess: Service %s updated successfully!', self.service_name)
             else:
-                logger.error('Error: Service %s could not be updated!', service_name)
+                logger.error('Error: Service %s could not be updated!', self.service_name)
                 logger.error('Error: %s', response)
     
 
