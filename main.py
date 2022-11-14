@@ -66,7 +66,7 @@ class TaskDefinitionConfig:
     
     def update_ecs_service(self):
         try:
-            response = self.ecs.update_service(cluster=cluster_name, service=service_name, taskDefinition=self.updated_task_definition['family'] + ':' + str(self.updated_task_definition['revision']))
+            response = self.ecs.update_service(cluster=self.cluster_name, service=self.service_name, taskDefinition=self.updated_task_definition['family'] + ':' + str(self.updated_task_definition['revision']))
         except Exception as error:
             raise error
         else:
