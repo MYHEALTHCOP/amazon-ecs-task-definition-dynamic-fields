@@ -66,6 +66,9 @@ class TaskDefinitionConfig:
             if meta_data['HTTPStatusCode'] == 200:
                 self.task_definition = self.purge_useless_keys(response['taskDefinition'])
                 self.revision = self.task_definition['revision']
+                self.task_role_arn = self.task_definition.get('taskRoleArn')
+                self.execution_role_arn = self.task_definition.get('executionRoleArn')
+                self.container_definitions = self.task_definition.get('containerDefinitions')
                 logger.info('Task definition: %s downloaded successfully!', self.task_definition_name)
                 logger.info(response.get('taskDefinition').get('requiresCompatibilities'))         
 
