@@ -5,6 +5,8 @@ from botocore.exceptions import ClientError
 import logging
 
 
+
+
 logging.basicConfig(level = logging.INFO, format='%(levelname)s: %(message)s')
 
 logger = logging.getLogger()
@@ -108,9 +110,9 @@ class TaskDefinitionConfig:
                 logger.error('Error: Service %s could not be updated!', self.service_name)
                 logger.error('Error: %s', response)
 
-def wait_for_service_stability(self):
-    waiter = self.ecs.get_waiter('services_stable')
-    waiter.wait(cluster=self.cluster_name, services=[self.service_name], WaiterConfig={'Delay': 10, 'MaxAttempts': 6})
+    def wait_for_service_stability(self):
+        waiter = self.ecs.get_waiter('services_stable')
+        waiter.wait(cluster=self.cluster_name, services=[self.service_name], WaiterConfig={'Delay': 10, 'MaxAttempts': 6})
 
 if __name__ == "__main__":
     taskdef_config = TaskDefinitionConfig()
@@ -120,4 +122,3 @@ if __name__ == "__main__":
     taskdef_config.save_new_task_definition()
     taskdef_config.update_ecs_service()
     taskdef_config.wait_for_service_stability()
-    
