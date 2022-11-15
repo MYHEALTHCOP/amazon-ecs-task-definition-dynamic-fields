@@ -112,7 +112,7 @@ class TaskDefinitionConfig:
 
     def wait_for_service_stability(self):
         waiter = self.ecs.get_waiter('services_stable')
-        waiter.wait(cluster=self.cluster_name, services=[self.service_name], WaiterConfig={'Delay': 10, 'MaxAttempts': 6})
+        waiter.wait(cluster=self.cluster_name, services=[self.service_name], WaiterConfig={'Delay': 10, 'MaxAttempts': 200})
 
 if __name__ == "__main__":
     taskdef_config = TaskDefinitionConfig()
