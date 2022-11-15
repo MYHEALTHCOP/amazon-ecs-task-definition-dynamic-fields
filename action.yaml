@@ -1,5 +1,6 @@
 name: "Amazon-ecs-task-definition-dynamic-fields"
 description: "Dynamically update any task definition field"
+author: "Oswald Gyabaah"
 inputs:
   task-family:
     description: "Name of the task definition family"

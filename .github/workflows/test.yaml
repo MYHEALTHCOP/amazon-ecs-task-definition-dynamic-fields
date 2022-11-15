@@ -24,8 +24,7 @@ jobs:
           aws-region: ${{ secrets.AWS_REGION }}
           aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY_ID }}
           aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
-          image-uri: 591424133958.dkr.ecr.${{secrets.AWS_REGION}}.amazonaws.com/file-service:file-servic
-          # image-uri: 591424133958.dkr.ecr.${{secrets.AWS_REGION}}.amazonaws.com/file-service:file-service
+          image-uri: 591424133958.dkr.ecr.${{secrets.AWS_REGION}}.amazonaws.com/file-service:file-service
           cluster-name: "api-cluster"
           service-name: "file-service"
           task-revision: "17"
