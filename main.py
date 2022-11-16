@@ -83,7 +83,6 @@ class TaskDefinitionConfig:
 
     def fill_in_required_info(self):
         self.container_definitions[0]['image'] = self.image
-        # self.task_definition['requiresCompatibilities'] = ['FARGATE']
         logger.info('Image URI and other info updated!')
          
        
