@@ -31,7 +31,8 @@ class TaskDefinitionConfig:
         self.task_role_arn = self.task_definition.get('taskRoleArn')
         self.execution_role_arn = self.task_definition.get('executionRoleArn')
         self.container_definitions = self.task_definition.get('containerDefinitions')
-
+    
+    @staticmethod
     def validate_inputs(self):
         if not self.family:
             raise ValueError('Task family is required!')
@@ -57,7 +58,7 @@ class TaskDefinitionConfig:
         logger.info('AWS access key was provided!')
         logger.info('AWS secret access key was provided!')
 
-    
+    @staticmethod
     def download_task_definition(self):
         try:
             response = self.ecs.describe_task_definition(taskDefinition=self.task_definition_name)
@@ -86,7 +87,7 @@ class TaskDefinitionConfig:
         logger.info('Image URI and other info updated!')
          
        
-
+    @staticmethod
     def save_new_task_definition(self):
         try:
             response = self.ecs.register_task_definition(containerDefinitions=self.container_definitions, family=self.family, executionRoleArn=self.execution_role_arn, taskRoleArn=self.task_role_arn)
@@ -96,6 +97,7 @@ class TaskDefinitionConfig:
             self.new_revision = response['taskDefinition']['revision']
             logger.info('Sucess: %s:%d --> %s:%d', self.family, self.revision, self.family, self.new_revision)
     
+    @staticmethod
     def update_ecs_service(self):
         try:
             response = self.ecs.update_service(cluster=self.cluster_name, service=self.service_name, taskDefinition=self.task_definition_name, forceNewDeployment=True)
@@ -108,16 +110,16 @@ class TaskDefinitionConfig:
             else:
                 logger.error('Error: Service %s could not be updated!', self.service_name)
                 logger.error('Error: %s', response)
-
+    
+    @staticmethod
     def wait_for_service_stability(self):
         waiter = self.ecs.get_waiter('services_stable')
-        waiter.wait(cluster=self.cluster_name, services=[self.service_name], WaiterConfig={'Delay': 10, 'MaxAttempts': 200})
+        waiter.wait(cluster=self.cluster_name, services=[self.service_name], WaiterConfig={'Delay': 10, 'MaxAttempts': 20})
 
 if __name__ == "__main__":
-    taskdef_config = TaskDefinitionConfig()
-    taskdef_config.validate_inputs()
-    taskdef_config.download_task_definition()
-    taskdef_config.fill_in_required_info()
-    taskdef_config.save_new_task_definition()
-    taskdef_config.update_ecs_service()
-    taskdef_config.wait_for_service_stability()
+    TaskDefinitionConfig.validate_inputs()
+    TaskDefinitionConfig.download_task_definition()
+    TaskDefinitionConfig.fill_in_required_info()
+    TaskDefinitionConfig.save_new_task_definition()
+    TaskDefinitionConfig.update_ecs_service()
+    TaskDefinitionConfig.wait_for_service_stability()
