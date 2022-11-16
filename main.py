@@ -33,7 +33,7 @@ class TaskDefinitionConfig:
         self.container_definitions = self.task_definition.get('containerDefinitions')
     
     @staticmethod
-    def validate_inputs(self):
+    def validate_inputs():
         if not self.family:
             raise ValueError('Task family is required!')
         if not self.image:
@@ -59,7 +59,7 @@ class TaskDefinitionConfig:
         logger.info('AWS secret access key was provided!')
 
     @staticmethod
-    def download_task_definition(self):
+    def download_task_definition():
         try:
             response = self.ecs.describe_task_definition(taskDefinition=self.task_definition_name)
         except Exception as error:
@@ -88,7 +88,7 @@ class TaskDefinitionConfig:
          
        
     @staticmethod
-    def save_new_task_definition(self):
+    def save_new_task_definition():
         try:
             response = self.ecs.register_task_definition(containerDefinitions=self.container_definitions, family=self.family, executionRoleArn=self.execution_role_arn, taskRoleArn=self.task_role_arn)
         except Exception as error:
@@ -98,7 +98,7 @@ class TaskDefinitionConfig:
             logger.info('Sucess: %s:%d --> %s:%d', self.family, self.revision, self.family, self.new_revision)
     
     @staticmethod
-    def update_ecs_service(self):
+    def update_ecs_service():
         try:
             response = self.ecs.update_service(cluster=self.cluster_name, service=self.service_name, taskDefinition=self.task_definition_name, forceNewDeployment=True)
         except Exception as error:
@@ -112,7 +112,7 @@ class TaskDefinitionConfig:
                 logger.error('Error: %s', response)
     
     @staticmethod
-    def wait_for_service_stability(self):
+    def wait_for_service_stability():
         waiter = self.ecs.get_waiter('services_stable')
         waiter.wait(cluster=self.cluster_name, services=[self.service_name], WaiterConfig={'Delay': 10, 'MaxAttempts': 20})
 
